@@ -34,8 +34,17 @@ def get_phones():
     return phones_mempory
 
 @app.get("/phones/{id}")
-def get_phone_by_id(id: str):
+def get_phone_by_id(identifier: str):
     for phone in phones_mempory:
-        if phone.identifier == id:
+        if phone.identifier == identifier:
             return phone
+    return JSONResponse(content={"message": "id does not exist or not found"}, status_code=404)
+
+
+@app.put("/phones/{id}/characteristics")
+def update_characteristics(identifier: str, new_characteristics: Characteristics):
+    for i, phone in enumerate(phones_mempory):
+        if phone.identifier == identifier:
+            phones_mempory[i].characteristics = new_characteristics
+            return {"message": "characteristics updated", "phones": phones_mempory[i].characteristics}
     return JSONResponse(content={"message": "id does not exist or not found"}, status_code=404)
