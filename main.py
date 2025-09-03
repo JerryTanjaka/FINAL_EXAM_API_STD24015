@@ -29,3 +29,13 @@ def create_phone(list_phones: phones):
     phones_mempory.extend(list_phones)
     return phones_mempory
 
+@app.get("/phones")
+def get_phones():
+    return phones_mempory
+
+@app.get("/phones/{id}")
+def get_phone_by_id(id: str):
+    for phone in phones_mempory:
+        if phone.identifier == id:
+            return phone
+    return JSONResponse(content={"message": "id does not exist or not found"}, status_code=404)
